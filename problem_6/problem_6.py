@@ -14,8 +14,28 @@ def part_1():
     print(len(arr))
 
 
+def part_2():
+    df = pd.read_csv("problem_6/input.txt", header=None).transpose()
+    df[1] = df[0]
+    df = df.groupby(0).count().fillna(0)
+    df.loc[6] = 0
+    df.loc[7] = 0
+    df.loc[8] = 0
+    df.loc[9] = 0
+    df.loc[0] = 0
+    df = df.reindex(range(10))
+    simulations = 256
+    while simulations > 0:
+        df.loc[9] = df.loc[0]
+        df.loc[7] += df.loc[0]
+        df = df.shift(-1).fillna(0)
+        simulations -= 1
+    print(df.sum().astype(str))
+
+
 def main():
     part_1()
+    part_2()
 
 
 if __name__ == "__main__":
